@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://www.gstatic.com https://www.google.com https://www.recaptcha.net 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src https://www.google.com https://www.recaptcha.net;"
+    />
+    <meta name="description" content="ASIC Flow Workshop by BANZS Semiconductor - backend physical design academy from fundamentals to tapeout readiness." />
+    <title>ASIC Flow Workshop | BANZS Semiconductor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css?v=20260613-left-menu" />
+  </head>
+  <body>
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+    <header class="topbar">
+      <button class="icon-button menu-left-button" id="sidebar-toggle" type="button" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a class="brand" href="#home" aria-label="ASIC Flow Workshop home">
+        <span class="brand-mark">B</span>
+        <span>
+          <strong>ASIC Flow Workshop</strong>
+          <small>BANZS Semiconductor</small>
+        </span>
+      </a>
+
+      <nav class="topnav" aria-label="Primary navigation">
+        <a href="#home">Home</a>
+        <a href="#academy">Explore Academy</a>
+        <a href="#modules">Modules</a>
+        <a href="#viewer">3D Tools</a>
+        <a href="#assignments">Assignments</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#login">Login</a>
+      </nav>
+
+      <div class="top-actions">
+        <a class="gold-button small" href="#interest">I am Interested</a>
+        <div id="account-corner" class="account-corner" aria-live="polite"></div>
+      </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-title">Workshop Flow</div>
+      <a href="#home">Home</a>
+      <a href="#academy">Explore Academy</a>
+      <a href="#modules">Module Library</a>
+      <a href="#assignments">Assignments</a>
+      <a href="#projects">Projects</a>
+      <a href="#waveform">Waveform Lab</a>
+      <a href="#viewer">ASIC Diagram Viewer</a>
+      <a href="#dashboard">Progress Dashboard</a>
+      <a href="#career">Career Roadmap</a>
+      <a href="#login">Login</a>
+      <a href="#interest">Contact / I am Interested</a>
+      <a href="#admin">Admin Users</a>
+    </aside>
+
+    <nav class="quick-dock" aria-label="Fast access">
+      <a href="#home">Home</a>
+      <a href="#viewer">3D</a>
+      <a href="#academy">Levels</a>
+      <a href="#assignments">Tasks</a>
+      <a href="#dashboard">XP</a>
+    </nav>
+
+    <main id="app" class="app-shell" tabindex="-1"></main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="./script.js?v=20260613-left-menu"></script>
+  </body>
+</html>

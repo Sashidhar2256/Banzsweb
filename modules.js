@@ -1,0 +1,153 @@
+export const modules = [
+  {
+    id: "digital-fundamentals",
+    title: "Digital Fundamentals for ASIC Physical Design",
+    track: "Beginner",
+    concepts: ["Boolean algebra", "logic gates", "sequential logic", "timing arcs"],
+    explanation: "This module builds the language of digital hardware: combinational paths, storage elements, propagation delay, setup and hold checks, and the way logic becomes silicon area.",
+    function: "Learners model gates, muxes, flops, counters, and timing arcs so later physical design reports feel connected to real circuit behavior.",
+    why: "Every backend decision is still a digital design decision. Floorplan pressure, clock latency, congestion, and signoff timing all trace back to logic structure.",
+    code: `module mux2(input a, input b, input sel, output y);\n  assign y = sel ? b : a;\nendmodule`,
+    quiz: ["What is the difference between combinational and sequential logic?", "Why does setup time exist?", "How does a mux impact timing depth?"],
+    assignment: "Build a 4:1 mux, draw the timing path, and identify launch/capture flops.",
+    project: "Create a small ALU block and estimate the longest logical path.",
+    interview: ["Explain setup vs hold timing.", "What is a timing arc?", "Why are flops used at pipeline boundaries?"]
+  },
+  {
+    id: "flow-awareness",
+    title: "ASIC Flow Awareness and Architecture to Signoff",
+    track: "Beginner",
+    concepts: ["architecture", "RTL", "synthesis", "physical design", "signoff", "tapeout"],
+    explanation: "A complete map of the ASIC journey from product intent and architecture through RTL, netlist generation, physical implementation, verification, signoff, and GDS delivery.",
+    function: "Learners understand handoffs, artifacts, ownership, quality gates, and why each stage exists.",
+    why: "Backend engineers must read upstream intent and downstream signoff risk. Flow awareness prevents isolated fixes that break the full chip objective.",
+    code: `read_verilog top.v\nread_liberty slow.lib\nlink_design top\nreport_checks -path_delay max`,
+    quiz: ["What is the output of synthesis?", "What does signoff prove?", "Why does tapeout need clean DRC and LVS?"],
+    assignment: "Create an ASIC flow checklist from RTL handoff to GDS.",
+    project: "Map every major artifact: RTL, SDC, Liberty, LEF, DEF, SPEF, GDS.",
+    interview: ["What is the difference between implementation and signoff?", "What is a PDK?", "What is tapeout readiness?"]
+  },
+  {
+    id: "hdl-verilog",
+    title: "HDL, VHDL and Verilog Fundamentals",
+    track: "Beginner",
+    concepts: ["Verilog", "VHDL", "RTL style", "synthesizable logic"],
+    explanation: "This module focuses on writing hardware descriptions that synthesis tools can convert into predictable gates.",
+    function: "Learners write registers, finite state machines, muxes, and arithmetic datapaths with clean reset and clocking style.",
+    why: "Physical design quality begins with clean RTL. Poor coding style can create timing bottlenecks, latch inference, and area growth.",
+    code: `always @(posedge clk or negedge rst_n) begin\n  if (!rst_n) q <= 1'b0;\n  else q <= d;\nend`,
+    quiz: ["What creates an inferred latch?", "Why use nonblocking assignments in flops?", "What does synthesizable mean?"],
+    assignment: "Write and simulate a 3-state FSM.",
+    project: "Build a packet counter RTL block with enable and reset.",
+    interview: ["Blocking vs nonblocking assignments?", "How do you avoid latch inference?", "What is a reset strategy?"]
+  },
+  {
+    id: "netlist-tech",
+    title: "RTL to Gate-Level Netlist and Technology Fundamentals",
+    track: "Intermediate",
+    concepts: ["standard cells", "Liberty", "LEF", "netlist", "corners"],
+    explanation: "Synthesis maps RTL into standard cells using technology libraries, timing constraints, and optimization targets.",
+    function: "Learners inspect gate netlists, cell delays, drive strengths, and physical abstracts.",
+    why: "Physical implementation depends on technology files. Backend engineers must know what Liberty, LEF, and DEF describe.",
+    code: `create_clock -name core_clk -period 2.000 [get_ports clk]\nset_input_delay 0.20 -clock core_clk [all_inputs]\nset_output_delay 0.20 -clock core_clk [all_outputs]`,
+    quiz: ["What information is in Liberty?", "What information is in LEF?", "Why use multiple corners?"],
+    assignment: "Write a simple SDC for a synchronous block.",
+    project: "Compare two drive strengths and explain timing/area tradeoffs.",
+    interview: ["What is a standard cell?", "What is a timing corner?", "What is cell drive strength?"]
+  },
+  {
+    id: "sta",
+    title: "Static Timing Analysis",
+    track: "Intermediate",
+    concepts: ["setup", "hold", "slack", "clock uncertainty", "OCV", "MMMC"],
+    explanation: "STA proves timing without dynamic simulation by checking launch and capture relationships across all constrained paths.",
+    function: "Learners read timing reports, debug setup and hold violations, and understand constraints.",
+    why: "A chip that fails timing may fail in silicon. STA is one of the central signoff gates.",
+    code: `report_timing -delay_type max -max_paths 10\nreport_timing -delay_type min -max_paths 10\nset_clock_uncertainty 0.05 [get_clocks core_clk]`,
+    quiz: ["What does positive slack mean?", "Why can hold get worse after CTS?", "What is clock uncertainty?"],
+    assignment: "Analyze a setup and hold report and propose fixes.",
+    project: "Create an MMMC view table for slow/fast corners.",
+    interview: ["How do you fix setup?", "How do you fix hold?", "What is CRPR?"]
+  },
+  {
+    id: "pd-intro",
+    title: "Physical Design Introduction",
+    track: "Intermediate",
+    concepts: ["floorplan", "placement", "clock tree", "routing", "extraction"],
+    explanation: "Physical design turns a netlist into a manufacturable layout while preserving timing, power, reliability, and manufacturability.",
+    function: "Learners connect tool stages with physical artifacts and implementation metrics.",
+    why: "Backend physical design is where logic becomes silicon.",
+    code: `read_lef tech.lef\nread_def floorplan.def\nplace_opt\nclock_opt\nroute_opt`,
+    quiz: ["What is DEF?", "What is utilization?", "Why does congestion matter?"],
+    assignment: "Draw a block-level physical design flow.",
+    project: "Create a mock floorplan with macros, ports, and channels.",
+    interview: ["What are physical-only cells?", "What is utilization?", "What is congestion?"]
+  },
+  {
+    id: "floor-power",
+    title: "Floorplanning and Power Planning",
+    track: "Advanced",
+    concepts: ["die/core", "macro placement", "power rings", "straps", "IR drop"],
+    explanation: "Floorplanning defines chip geometry, macro location, pin placement, utilization, and power grid strategy.",
+    function: "Learners design a floorplan that is routable, timing-aware, and power-safe.",
+    why: "Bad floorplans create downstream congestion, timing failures, IR drop, and schedule risk.",
+    code: `initialize_floorplan -core_utilization 0.68\ncreate_power_ring -nets {VDD VSS}\ncreate_power_straps -direction vertical -pitch 40`,
+    quiz: ["Why leave routing channels near macros?", "What causes IR drop?", "What is core utilization?"],
+    assignment: "Plan macro placement and power straps for a small SoC block.",
+    project: "Build a floorplan review checklist.",
+    interview: ["How do you place macros?", "What is a power grid?", "What are halos and blockages?"]
+  },
+  {
+    id: "place-cts-route",
+    title: "Metal Stack, Placement, CTS and Routing",
+    track: "Advanced",
+    concepts: ["metal layers", "global routing", "detailed routing", "clock skew", "DRC"],
+    explanation: "This module covers the implementation engine room: placing cells, building clock trees, routing wires, and cleaning design rule issues.",
+    function: "Learners inspect placement density, clock latency, route congestion, via choices, and metal stack usage.",
+    why: "Timing, power, signal integrity, and manufacturability converge in these stages.",
+    code: `set_clock_tree_options -target_skew 0.030\nclock_opt\nroute_global\nroute_detail\nverify_drc`,
+    quiz: ["What is CTS?", "Why are upper metals used for clocks?", "What is DRC?"],
+    assignment: "Debug a route congestion hotspot and propose layer/blockage fixes.",
+    project: "Create a placement-to-routing signoff checklist.",
+    interview: ["What is useful skew?", "How do you reduce congestion?", "Why do shorts/opens happen?"]
+  },
+  {
+    id: "signoff-tapeout",
+    title: "Signoff, DRC/LVS, IR/EM, SI, ECO and Tapeout Readiness",
+    track: "Expert",
+    concepts: ["DRC", "LVS", "IR drop", "EM", "crosstalk", "ECO", "UPF", "tapeout"],
+    explanation: "Final signoff confirms the layout is clean, electrically reliable, logically equivalent, timing closed, and ready for manufacturing handoff.",
+    function: "Learners work through final checks: timing, physical verification, power integrity, low-power intent, noise, and ECO closure.",
+    why: "Tapeout is irreversible in cost and schedule. Signoff discipline protects silicon success.",
+    code: `verify_lvs -layout final.gds -schematic top.spice\nreport_noise\nreport_power_integrity\nwrite_gds top_final.gds`,
+    quiz: ["What is the difference between DRC and LVS?", "What is EM?", "Why are ECOs risky late in the flow?"],
+    assignment: "Create a tapeout readiness dashboard with pass/fail signoff gates.",
+    project: "Run a mock ECO impact analysis from timing fix to DRC/LVS recheck.",
+    interview: ["How do you fix crosstalk?", "What is UPF?", "What must be clean before GDS handoff?"]
+  }
+];
+
+export const backendTopics = [
+  "Floorplanning", "Power Planning", "Placement", "CTS", "Routing", "STA", "DRC", "LVS",
+  "IR Drop", "EM", "Signal Integrity", "Crosstalk", "MMMC", "ECO", "Low Power UPF",
+  "Signoff", "Tapeout readiness"
+];
+
+export const assignments = [
+  ["Beginner", "Logic gates", "Build AND/OR/XOR truth tables and draw transistor-level intent."],
+  ["Beginner", "Timing arcs", "Identify cell input-to-output arcs and explain positive/negative unate behavior."],
+  ["Beginner", "Flip-flops", "Draw setup, hold, clk-to-q, and reset timing windows."],
+  ["Beginner", "MUX", "Write RTL for 2:1 and 4:1 muxes and compare logic depth."],
+  ["Intermediate", "RTL coding", "Create a clean FSM with reset, enable, and output decode."],
+  ["Intermediate", "Synthesis", "Map RTL to a gate-level netlist and report area/timing intent."],
+  ["Intermediate", "SDC constraints", "Create clocks, input delays, output delays, and false paths."],
+  ["Intermediate", "STA setup/hold", "Read reports and propose practical setup and hold fixes."],
+  ["Advanced", "Floorplanning", "Place macros, pins, halos, and blockages for routability."],
+  ["Advanced", "Power rings/straps", "Design VDD/VSS rings and straps with IR-drop awareness."],
+  ["Advanced", "Placement", "Review density, congestion, timing paths, and legalization."],
+  ["Advanced", "CTS", "Build a clock tree plan with skew, latency, and useful skew goals."],
+  ["Advanced", "Routing", "Resolve shorts, opens, spacing issues, and congestion."],
+  ["Expert", "DRC/LVS", "Debug physical verification violations and document closure steps."],
+  ["Expert", "Signoff", "Create timing, physical, power, and noise signoff checklist."],
+  ["Expert", "Tapeout project", "Package final GDS readiness report with risks and owners."]
+];
